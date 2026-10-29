@@ -39,6 +39,7 @@
     "!lib/action"
   ],
   "scripts": {
+    "prepare": "tsc -p tsconfig.build.json",
     "build": "tsc -p tsconfig.build.json",
     "build:action": "node scripts/build-action.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
