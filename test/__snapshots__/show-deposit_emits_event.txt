@@ -1,0 +1,31 @@
+ledger: protocol 29, sequence 0, timestamp 0
+
+storage:
+  GAAA…GO6V account GAAA…GO6V = balance 0, seq 0, 0 signer(s)
+  CAAA…ITA4 persistent Shares(CAAA…K3IM) = 248i128  (live until 1036800)
+  CAAA…ITA4 persistent contract instance = wasm 0d6d61ed…  (live until 4095)
+  CAAA…ITA4 instance Admin = CAAA…D2KM
+  CAAA…ITA4 instance Token = CBUS…IUNF
+  CAAA…ITA4 instance TotalShares = 248i128
+  CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 2i128, authorized: true, clawback: false}  (live until 518400)
+  CBUS…IUNF persistent Balance(CAAA…ITA4) = {amount: 248i128, authorized: true, clawback: false}  (live until 518400)
+  CBUS…IUNF persistent Balance(CAAA…K3IM) = {amount: 750i128, authorized: true, clawback: false}  (live until 518400)
+  CBUS…IUNF persistent contract instance = stellar_asset  (live until 120960)
+  CBUS…IUNF instance METADATA = {decimal: 7u32, name: "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V", symbol: "aaa"}
+  CBUS…IUNF instance Admin = CAAA…FCT4
+  CBUS…IUNF instance AssetInfo = [AlphaNum4, {asset_code: "aaa\\0", issuer: 0x0000000000000000000000000000000000000000000000000000000000000003}]
+  wasm 0d6d61ed… = 86 bytes  (live until 4095)
+  (3 auth nonce entries hidden)
+
+events (last call):
+  CBUS…IUNF: transfer(CAAA…K3IM, CAAA…ITA4, "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V") → 248i128
+  CBUS…IUNF: transfer(CAAA…K3IM, CAAA…D2KM, "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V") → 2i128
+  CAAA…ITA4: fee_charged(CAAA…K3IM) → {fee: 2i128}
+  CAAA…ITA4: deposited(CAAA…K3IM) → {amount: 248i128}
+
+auth:
+  GAAA…GO6V authorized CBUS…IUNF.set_admin(CAAA…FCT4)
+  CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…K3IM, 1000i128)
+  CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 250i128)
+    └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 248i128)
+    └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 2i128)

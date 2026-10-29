@@ -1,0 +1,85 @@
+Snapwise: main → feature
+5 changed, 0 added, 0 removed, 0 unchanged
+
+● vault › test::deposit_emits_event  (vault/test_snapshots/test/deposit_emits_event.1.json)
+  storage: 3 changed, 1 added, 0 removed, 1 TTL moved
+    ~ CAAA…ITA4 persistent Shares(CAAA…K3IM): 250i128 @518400 → 248i128 @1036800
+    ~ CAAA…ITA4 instance TotalShares: 250i128 → 248i128
+    ~ CBUS…IUNF persistent Balance(CAAA…ITA4): {amount: 250i128, authorized: true, clawback: false} @518400 → {amount: 248i128, authorized: true, clawback: false} @518400
+    + CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 2i128, authorized: true, clawback: false} @518400
+  events (last call):
+    - CBUS…IUNF: transfer(CAAA…K3IM, CAAA…ITA4, "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V") → 250i128
+    - CAAA…ITA4: deposited(CAAA…K3IM) → {amount: 250i128}
+    + CBUS…IUNF: transfer(CAAA…K3IM, CAAA…ITA4, "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V") → 248i128
+    + CBUS…IUNF: transfer(CAAA…K3IM, CAAA…D2KM, "aaa:GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGO6V") → 2i128
+    + CAAA…ITA4: fee_charged(CAAA…K3IM) → {fee: 2i128}
+    + CAAA…ITA4: deposited(CAAA…K3IM) → {amount: 248i128}
+  auth:
+      …
+      CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…K3IM, 1000i128)
+      CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 250i128)
+    -   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 250i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 248i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 2i128)
+
+● vault › test::deposit_records_shares  (vault/test_snapshots/test/deposit_records_shares.1.json)
+  storage: 3 changed, 1 added, 0 removed, 1 TTL moved
+    ~ CAAA…ITA4 persistent Shares(CAAA…K3IM): 400i128 @518400 → 396i128 @1036800
+    ~ CAAA…ITA4 instance TotalShares: 400i128 → 396i128
+    ~ CBUS…IUNF persistent Balance(CAAA…ITA4): {amount: 400i128, authorized: true, clawback: false} @518400 → {amount: 396i128, authorized: true, clawback: false} @518400
+    + CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 4i128, authorized: true, clawback: false} @518400
+  auth:
+      …
+      CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…K3IM, 1000i128)
+      CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 400i128)
+    -   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 400i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 396i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 4i128)
+
+● vault › test::two_users_are_independent  (vault/test_snapshots/test/two_users_are_independent.1.json)
+  storage: 4 changed, 1 added, 0 removed, 2 TTL moved
+    ~ CAAA…ITA4 persistent Shares(CAAA…K3IM): 100i128 @518400 → 99i128 @1036800
+    ~ CAAA…ITA4 persistent Shares(CAAA…MDR4): 300i128 @518400 → 297i128 @1036800
+    ~ CAAA…ITA4 instance TotalShares: 400i128 → 396i128
+    ~ CBUS…IUNF persistent Balance(CAAA…ITA4): {amount: 400i128, authorized: true, clawback: false} @518400 → {amount: 396i128, authorized: true, clawback: false} @518400
+    + CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 4i128, authorized: true, clawback: false} @518400
+  auth:
+      …
+      CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…MDR4, 500i128)
+      CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 100i128)
+    -   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 100i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 99i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 1i128)
+      CAAA…MDR4 authorized CAAA…ITA4.deposit(CAAA…MDR4, 300i128)
+    -   └ CBUS…IUNF.transfer(CAAA…MDR4, CAAA…ITA4, 300i128)
+    +   └ CBUS…IUNF.transfer(CAAA…MDR4, CAAA…ITA4, 297i128)
+    +   └ CBUS…IUNF.transfer(CAAA…MDR4, CAAA…D2KM, 3i128)
+
+● vault › test::withdraw_more_than_shares_fails  (vault/test_snapshots/test/withdraw_more_than_shares_fails.1.json)
+  storage: 3 changed, 1 added, 0 removed, 1 TTL moved
+    ~ CAAA…ITA4 persistent Shares(CAAA…K3IM): 100i128 @518400 → 99i128 @1036800
+    ~ CAAA…ITA4 instance TotalShares: 100i128 → 99i128
+    ~ CBUS…IUNF persistent Balance(CAAA…ITA4): {amount: 100i128, authorized: true, clawback: false} @518400 → {amount: 99i128, authorized: true, clawback: false} @518400
+    + CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 1i128, authorized: true, clawback: false} @518400
+  auth:
+      …
+      CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…K3IM, 1000i128)
+      CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 100i128)
+    -   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 100i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 99i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 1i128)
+
+● vault › test::withdraw_returns_tokens  (vault/test_snapshots/test/withdraw_returns_tokens.1.json)
+  storage: 3 changed, 1 added, 0 removed, 1 TTL moved
+    ~ CAAA…ITA4 persistent Shares(CAAA…K3IM): 250i128 @518400 → 246i128 @1036800
+    ~ CAAA…ITA4 instance TotalShares: 250i128 → 246i128
+    ~ CBUS…IUNF persistent Balance(CAAA…ITA4): {amount: 250i128, authorized: true, clawback: false} @518400 → {amount: 246i128, authorized: true, clawback: false} @518400
+    + CBUS…IUNF persistent Balance(CAAA…D2KM) = {amount: 4i128, authorized: true, clawback: false} @518400
+  auth:
+      …
+      CAAA…FCT4 authorized CBUS…IUNF.mint(CAAA…K3IM, 1000i128)
+      CAAA…K3IM authorized CAAA…ITA4.deposit(CAAA…K3IM, 400i128)
+    -   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 400i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…ITA4, 396i128)
+    +   └ CBUS…IUNF.transfer(CAAA…K3IM, CAAA…D2KM, 4i128)
+      CAAA…K3IM authorized CAAA…ITA4.withdraw(CAAA…K3IM, 150i128)
