@@ -45,7 +45,8 @@ function lcsDiff(b: string[], a: string[]): DiffLine[] {
   const lcs: Uint32Array[] = Array.from({ length: n + 1 }, () => new Uint32Array(m + 1));
   for (let i = n - 1; i >= 0; i--) {
     for (let j = m - 1; j >= 0; j--) {
-      lcs[i]![j] = b[i] === a[j] ? lcs[i + 1]![j + 1]! + 1 : Math.max(lcs[i + 1]![j]!, lcs[i]![j + 1]!);
+      lcs[i]![j] =
+        b[i] === a[j] ? lcs[i + 1]![j + 1]! + 1 : Math.max(lcs[i + 1]![j]!, lcs[i]![j + 1]!);
     }
   }
   const out: DiffLine[] = [];
@@ -85,7 +86,8 @@ export function withContext(lines: DiffLine[], context = 2): DiffLine[] {
   const keep = new Array<boolean>(lines.length).fill(false);
   lines.forEach((l, idx) => {
     if (l.op === " ") return;
-    for (let k = Math.max(0, idx - context); k <= Math.min(lines.length - 1, idx + context); k++) keep[k] = true;
+    for (let k = Math.max(0, idx - context); k <= Math.min(lines.length - 1, idx + context); k++)
+      keep[k] = true;
   });
   const out: DiffLine[] = [];
   let skipped = false;

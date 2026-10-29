@@ -1,4 +1,4 @@
-import { storageCounts, type Report, type StorageChange } from "../diff.js";
+import { storageCounts, testLabel, type Report, type StorageChange } from "../diff.js";
 import { withContext } from "../linediff.js";
 import { shortAddress } from "../scval.js";
 
@@ -22,7 +22,7 @@ export function renderText(report: Report, opts: TextOptions = {}): string {
   }
 
   for (const test of report.tests) {
-    out.push("", c.bold(`● ${test.crate} › ${test.name}`) + c.dim(`  (${test.path})`));
+    out.push("", c.bold(`● ${testLabel(test)}`) + c.dim(`  (${test.path})`));
     if (test.status === "error") {
       out.push(c.red(`  unreadable: ${test.error}`));
       continue;
@@ -37,7 +37,9 @@ export function renderText(report: Report, opts: TextOptions = {}): string {
     for (const e of test.env) out.push(c.yellow(`  ⚙ ${e.field}: ${e.before} → ${e.after}`));
     if (test.storage.length) {
       const sc = storageCounts(test.storage);
-      out.push(`  storage: ${sc.changed} changed, ${sc.added} added, ${sc.removed} removed, ${sc.ttl} TTL moved`);
+      out.push(
+        `  storage: ${sc.changed} changed, ${sc.added} added, ${sc.removed} removed, ${sc.ttl} TTL moved`,
+      );
       for (const ch of test.storage) out.push(`    ${storageLine(ch, c)}`);
     }
     if (test.hiddenNoise) out.push(c.dim(`    (${test.hiddenNoise} auth nonce entries hidden)`));
@@ -57,16 +59,21 @@ export function renderText(report: Report, opts: TextOptions = {}): string {
 }
 
 function storageLine(ch: StorageChange, c: ReturnType<typeof colors>): string {
-  const where = [ch.owner ? shortAddress(ch.owner) : "", ch.durability ?? ""].filter(Boolean).join(" ");
+  const where = [ch.owner ? shortAddress(ch.owner) : "", ch.durability ?? ""]
+    .filter(Boolean)
+    .join(" ");
   const name = `${where} ${ch.label}`.trim();
-  const ttl = (s?: { liveUntil: number | null }) => (s?.liveUntil == null ? "" : ` @${s.liveUntil}`);
+  const ttl = (s?: { liveUntil: number | null }) =>
+    s?.liveUntil == null ? "" : ` @${s.liveUntil}`;
   switch (ch.kind) {
     case "added":
       return c.green(`+ ${name} = ${ch.after!.value}${ttl(ch.after)}`);
     case "removed":
       return c.red(`- ${name} = ${ch.before!.value}${ttl(ch.before)}`);
     case "changed":
-      return c.yellow(`~ ${name}: ${ch.before!.value}${ttl(ch.before)} → ${ch.after!.value}${ttl(ch.after)}`);
+      return c.yellow(
+        `~ ${name}: ${ch.before!.value}${ttl(ch.before)} → ${ch.after!.value}${ttl(ch.after)}`,
+      );
     case "ttl":
       return c.cyan(`⏳ ${name}: live until ${ch.before!.liveUntil} → ${ch.after!.liveUntil}`);
   }

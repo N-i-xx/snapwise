@@ -1,4 +1,10 @@
-import { compactJson, renderExecutable, renderScVal, shortAddress, type RenderOptions } from "./scval.js";
+import {
+  compactJson,
+  renderExecutable,
+  renderScVal,
+  shortAddress,
+  type RenderOptions,
+} from "./scval.js";
 import { isObject, type Json, type LedgerEntryWithTtl } from "./snapshot.js";
 
 /**
@@ -9,7 +15,14 @@ import { isObject, type Json, type LedgerEntryWithTtl } from "./snapshot.js";
 export interface FlatEntry {
   /** Stable identity used to match the same entry across base and head. */
   id: string;
-  kind: "contract_data" | "instance_storage" | "contract_instance" | "contract_code" | "account" | "trustline" | "other";
+  kind:
+    | "contract_data"
+    | "instance_storage"
+    | "contract_instance"
+    | "contract_code"
+    | "account"
+    | "trustline"
+    | "other";
   /** `persistent`, `temporary`, `instance`, or undefined for non-contract entries. */
   durability?: string;
   /** Owning contract or account strkey, when there is one. */
@@ -25,7 +38,10 @@ export interface FlatEntry {
   noise: boolean;
 }
 
-export function flattenEntries(entries: LedgerEntryWithTtl[], opts: RenderOptions = {}): Map<string, FlatEntry> {
+export function flattenEntries(
+  entries: LedgerEntryWithTtl[],
+  opts: RenderOptions = {},
+): Map<string, FlatEntry> {
   const out = new Map<string, FlatEntry>();
   const keyOpts: RenderOptions = { ...opts, enumStyle: true };
   const add = (e: FlatEntry) => {
@@ -48,7 +64,11 @@ export function flattenEntries(entries: LedgerEntryWithTtl[], opts: RenderOption
       const key = (body["key"] ?? null) as Json;
       const val = (body["val"] ?? null) as Json;
 
-      if (key === "ledger_key_contract_instance" && isObject(val) && isObject(val["contract_instance"])) {
+      if (
+        key === "ledger_key_contract_instance" &&
+        isObject(val) &&
+        isObject(val["contract_instance"])
+      ) {
         const inst = val["contract_instance"];
         add({
           id: `instance:${contract}`,
@@ -84,7 +104,9 @@ export function flattenEntries(entries: LedgerEntryWithTtl[], opts: RenderOption
 
       const isNonce = isObject(key) && "ledger_key_nonce" in key;
       add({
-        id: isNonce ? `nonce:${contract}:${compactJson(key)}` : `data:${contract}:${durability}:${compactJson(key)}`,
+        id: isNonce
+          ? `nonce:${contract}:${compactJson(key)}`
+          : `data:${contract}:${durability}:${compactJson(key)}`,
         kind: "contract_data",
         durability,
         owner: contract,
