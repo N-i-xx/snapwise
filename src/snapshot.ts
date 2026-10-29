@@ -86,7 +86,10 @@ export function parseSnapshot(text: string, path = "<snapshot>"): TestSnapshot {
   if (!isObject(raw)) throw new SnapshotParseError(path, "expected a JSON object");
   const ledger = raw["ledger"];
   if (!isObject(ledger) || !Array.isArray(ledger["ledger_entries"])) {
-    throw new SnapshotParseError(path, "missing ledger.ledger_entries; is this a Soroban test snapshot?");
+    throw new SnapshotParseError(
+      path,
+      "missing ledger.ledger_entries; is this a Soroban test snapshot?",
+    );
   }
   return {
     generators: (raw["generators"] as Json) ?? null,

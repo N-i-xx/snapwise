@@ -76,9 +76,7 @@ function render(v: Json, opts: RenderOptions): string {
       if (opts.enumStyle && items.length > 0 && isTagged(items[0], "symbol")) {
         const name = String((items[0] as { symbol: Json }).symbol);
         const args = items.slice(1);
-        return args.length === 0
-          ? name
-          : `${name}(${args.map((x) => render(x, opts)).join(", ")})`;
+        return args.length === 0 ? name : `${name}(${args.map((x) => render(x, opts)).join(", ")})`;
       }
       return `[${items.map((x) => render(x, opts)).join(", ")}]`;
     }
@@ -94,7 +92,13 @@ function render(v: Json, opts: RenderOptions): string {
     case "ledger_key_nonce":
       return isObject(inner) ? `nonce(${scalar(inner["nonce"] ?? null)})` : "nonce";
     case "error":
-      return `Error(${isObject(inner) ? Object.entries(inner).map(([k, x]) => `${k}: ${scalar(x)}`).join(", ") : scalar(inner)})`;
+      return `Error(${
+        isObject(inner)
+          ? Object.entries(inner)
+              .map(([k, x]) => `${k}: ${scalar(x)}`)
+              .join(", ")
+          : scalar(inner)
+      })`;
     case "contract_instance":
       return renderInstance(inner, opts);
     default:

@@ -1,8 +1,18 @@
-import { storageCounts, type Report } from "./diff.js";
+import { storageCounts, testLabel, type Report } from "./diff.js";
 import { countOps } from "./linediff.js";
 
 /** Categories that `--fail-on` / the `fail-on` input can name. */
-export const FAIL_CATEGORIES = ["any", "auth", "storage", "ttl", "events", "env", "added", "removed", "error"] as const;
+export const FAIL_CATEGORIES = [
+  "any",
+  "auth",
+  "storage",
+  "ttl",
+  "events",
+  "env",
+  "added",
+  "removed",
+  "error",
+] as const;
 export type FailCategory = (typeof FAIL_CATEGORIES)[number];
 
 export function parseFailOn(input: string | undefined): FailCategory[] {
@@ -12,7 +22,9 @@ export function parseFailOn(input: string | undefined): FailCategory[] {
     const v = raw.trim().toLowerCase();
     if (!v || v === "none") continue;
     if (!(FAIL_CATEGORIES as readonly string[]).includes(v)) {
-      throw new Error(`Unknown fail-on category "${raw}". Use one or more of: none, ${FAIL_CATEGORIES.join(", ")}.`);
+      throw new Error(
+        `Unknown fail-on category "${raw}". Use one or more of: none, ${FAIL_CATEGORIES.join(", ")}.`,
+      );
     }
     out.push(v as FailCategory);
   }
@@ -28,7 +40,7 @@ export function evaluatePolicy(report: Report, failOn: FailCategory[]): string[]
   const want = new Set(failOn);
   const reasons: string[] = [];
   for (const t of report.tests) {
-    const name = `${t.crate} › ${t.name}`;
+    const name = testLabel(t);
     const hit = (cat: FailCategory, why: string) => {
       if (want.has(cat) || want.has("any")) reasons.push(`${name}: ${why}`);
     };

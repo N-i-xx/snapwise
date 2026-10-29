@@ -122,7 +122,10 @@ function diffStorage(
   for (const [id, eb] of b) {
     const ea = a.get(id);
     if (!ea) {
-      push({ kind: "removed", ...base(eb), before: { value: eb.value, liveUntil: eb.liveUntil } }, eb);
+      push(
+        { kind: "removed", ...base(eb), before: { value: eb.value, liveUntil: eb.liveUntil } },
+        eb,
+      );
       continue;
     }
     const valueChanged = eb.valueId !== ea.valueId;
@@ -217,14 +220,21 @@ export function authLines(s: TestSnapshot, opts: RenderOptions = {}): string[] {
     for (const entry of call) {
       if (!Array.isArray(entry) || entry.length < 2) continue;
       const [address, tree] = entry;
-      lines.push(`${shortAddress(String(address), opts)} authorized ${renderInvocation(tree, opts)}`);
+      lines.push(
+        `${shortAddress(String(address), opts)} authorized ${renderInvocation(tree, opts)}`,
+      );
       pushSubInvocations(lines, tree, 1, opts);
     }
   }
   return lines;
 }
 
-function pushSubInvocations(lines: string[], node: AuthInvocation, depth: number, opts: RenderOptions) {
+function pushSubInvocations(
+  lines: string[],
+  node: AuthInvocation,
+  depth: number,
+  opts: RenderOptions,
+) {
   for (const sub of node?.sub_invocations ?? []) {
     lines.push(`${"  ".repeat(depth)}└ ${renderInvocation(sub, opts)}`);
     pushSubInvocations(lines, sub, depth + 1, opts);
@@ -247,19 +257,40 @@ function renderInvocation(node: AuthInvocation, opts: RenderOptions): string {
   return renderScVal((fn ?? null) as Json, opts);
 }
 
+/** "crate › module::test", or just the test name when the crate is the scan root. */
+export function testLabel(t: Pick<TestDiff, "crate" | "name">): string {
+  return t.crate ? `${t.crate} › ${t.name}` : t.name;
+}
+
 /** Counts of each kind of change across a list of storage changes. */
 export function storageCounts(changes: StorageChange[]): Record<StorageChangeKind, number> {
   const out: Record<StorageChangeKind, number> = { added: 0, removed: 0, changed: 0, ttl: 0 };
   for (const c of changes) out[c.kind]++;
   // A value change that also moved the TTL counts as a TTL change too.
   for (const c of changes) {
-    if (c.kind !== "ttl" && c.before && c.after && c.before.liveUntil !== c.after.liveUntil) out.ttl++;
+    if (c.kind !== "ttl" && c.before && c.after && c.before.liveUntil !== c.after.liveUntil)
+      out.ttl++;
   }
   return out;
 }
 
-export function summarize(tests: TestDiff[], unchanged: number, base: string, head: string): Report {
-  const totals = { changed: 0, added: 0, removed: 0, errors: 0, storage: 0, ttl: 0, events: 0, auth: 0, env: 0 };
+export function summarize(
+  tests: TestDiff[],
+  unchanged: number,
+  base: string,
+  head: string,
+): Report {
+  const totals = {
+    changed: 0,
+    added: 0,
+    removed: 0,
+    errors: 0,
+    storage: 0,
+    ttl: 0,
+    events: 0,
+    auth: 0,
+    env: 0,
+  };
   for (const t of tests) {
     if (t.status === "changed") totals.changed++;
     else if (t.status === "added") totals.added++;

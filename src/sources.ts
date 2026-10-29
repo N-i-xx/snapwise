@@ -2,7 +2,14 @@ import { execFile } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import { join, relative, sep } from "node:path";
 import { promisify } from "node:util";
-import { diffSnapshots, hasChanges, summarize, type DiffOptions, type Report, type TestDiff } from "./diff.js";
+import {
+  diffSnapshots,
+  hasChanges,
+  summarize,
+  type DiffOptions,
+  type Report,
+  type TestDiff,
+} from "./diff.js";
 import { emptySnapshot, parseSnapshot, type TestSnapshot } from "./snapshot.js";
 
 const execFileAsync = promisify(execFile);
@@ -84,7 +91,11 @@ export class GitSource implements SnapshotSource {
   ) {}
 
   private git(args: string[]) {
-    return execFileAsync("git", args, { cwd: this.cwd, maxBuffer: 256 * 1024 * 1024, encoding: "utf8" });
+    return execFileAsync("git", args, {
+      cwd: this.cwd,
+      maxBuffer: 256 * 1024 * 1024,
+      encoding: "utf8",
+    });
   }
 
   private loadBlobs(): Promise<Map<string, string>> {
@@ -124,7 +135,7 @@ export class GitSource implements SnapshotSource {
 export function describePath(path: string): { crate: string; name: string } {
   const parts = path.split("/");
   const idx = parts.lastIndexOf("test_snapshots");
-  const crate = idx > 0 ? parts[idx - 1]! : ".";
+  const crate = idx > 0 ? parts[idx - 1]! : "";
   const modules = parts.slice(idx + 1, -1);
   const file = parts[parts.length - 1]!.replace(/\.json$/, "");
   const m = /^(.*)\.(\d+)$/.exec(file);
@@ -147,7 +158,16 @@ export async function compareSources(
 
   for (const path of all) {
     const { crate, name } = describePath(path);
-    const common = { path, crate, name, storage: [], events: [], auth: [], env: [], hiddenNoise: 0 };
+    const common = {
+      path,
+      crate,
+      name,
+      storage: [],
+      events: [],
+      auth: [],
+      env: [],
+      hiddenNoise: 0,
+    };
 
     if (base.fingerprint && head.fingerprint) {
       const [fb, fh] = await Promise.all([base.fingerprint(path), head.fingerprint(path)]);

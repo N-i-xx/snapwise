@@ -1,4 +1,10 @@
-import { storageCounts, type Report, type StorageChange, type TestDiff } from "../diff.js";
+import {
+  storageCounts,
+  testLabel,
+  type Report,
+  type StorageChange,
+  type TestDiff,
+} from "../diff.js";
 import { countOps, withContext, type DiffLine } from "../linediff.js";
 import { shortAddress } from "../scval.js";
 
@@ -19,7 +25,13 @@ export interface MarkdownOptions {
 
 export function renderMarkdown(report: Report, opts: MarkdownOptions = {}): string {
   const max = opts.maxLength ?? DEFAULT_MAX_LENGTH;
-  const head = [COMMENT_MARKER, "### 🔎 Snapwise: test snapshot review", "", summaryLine(report), ""];
+  const head = [
+    COMMENT_MARKER,
+    "### 🔎 Snapwise: test snapshot review",
+    "",
+    summaryLine(report),
+    "",
+  ];
   const footer = [
     "",
     `<sub>Compared \`${escapeInline(report.base)}\` → \`${escapeInline(report.head)}\` · events show the last call of each test only · [Snapwise](https://github.com/N-thnl/snapwise)${opts.footer ? ` · ${opts.footer}` : ""}</sub>`,
@@ -74,7 +86,7 @@ export function summaryLine(report: Report): string {
 function overviewTable(tests: TestDiff[]): string[] {
   const rows = ["| Test | Status | Storage | TTL | Events | Auth |", "|---|---|---|---|---|---|"];
   for (const t of tests) {
-    const name = `\`${escapeInline(t.crate)} › ${escapeInline(t.name)}\``;
+    const name = `\`${escapeInline(testLabel(t))}\``;
     if (t.status !== "changed") {
       const label = { added: "🆕 added", removed: "🗑️ removed", error: "❌ unreadable" }[t.status];
       rows.push(`| ${name} | ${label} | | | | |`);
@@ -103,7 +115,7 @@ function lineCell(c: { added: number; removed: number }): string {
 }
 
 function testDetails(t: TestDiff, context: number): string {
-  const out = [`<details><summary><code>${escapeHtml(`${t.crate} › ${t.name}`)}</code></summary>`, ""];
+  const out = [`<details><summary><code>${escapeHtml(testLabel(t))}</code></summary>`, ""];
   out.push(`File: \`${escapeInline(t.path)}\``, "");
 
   if (t.status === "error") {
@@ -124,18 +136,31 @@ function testDetails(t: TestDiff, context: number): string {
       for (const c of t.storage) out.push(storageRow(c));
       out.push("");
     }
-    if (t.hiddenNoise > 0) out.push(`<sub>${t.hiddenNoise} auth nonce entr${t.hiddenNoise === 1 ? "y" : "ies"} changed (hidden).</sub>`, "");
-    if (t.events.some((l) => l.op !== " ")) out.push("**Events** (last call)", "", ...diffBlock(t.events, context), "");
-    if (t.auth.some((l) => l.op !== " ")) out.push("**Auth** ⚠️", "", ...diffBlock(t.auth, context), "");
+    if (t.hiddenNoise > 0)
+      out.push(
+        `<sub>${t.hiddenNoise} auth nonce entr${t.hiddenNoise === 1 ? "y" : "ies"} changed (hidden).</sub>`,
+        "",
+      );
+    if (t.events.some((l) => l.op !== " "))
+      out.push("**Events** (last call)", "", ...diffBlock(t.events, context), "");
+    if (t.auth.some((l) => l.op !== " "))
+      out.push("**Auth** ⚠️", "", ...diffBlock(t.auth, context), "");
   }
   out.push("</details>");
   return out.join("\n");
 }
 
-const KIND_ICON: Record<StorageChange["kind"], string> = { added: "➕", removed: "➖", changed: "✏️", ttl: "⏳" };
+const KIND_ICON: Record<StorageChange["kind"], string> = {
+  added: "➕",
+  removed: "➖",
+  changed: "✏️",
+  ttl: "⏳",
+};
 
 function storageRow(c: StorageChange): string {
-  const where = [c.owner ? shortAddress(c.owner) : "", c.durability ?? ""].filter(Boolean).join(" ");
+  const where = [c.owner ? shortAddress(c.owner) : "", c.durability ?? ""]
+    .filter(Boolean)
+    .join(" ");
   const entry = `${where ? `${escapeHtml(where)} ` : ""}<code>${escapeHtml(c.label)}</code>`;
   return `| ${KIND_ICON[c.kind]} | ${entry} | ${side(c, "before")} | ${side(c, "after")} |`;
 }
@@ -145,7 +170,10 @@ function side(c: StorageChange, which: "before" | "after"): string {
   if (!s) return "";
   const other = c[which === "before" ? "after" : "before"];
   const ttlMoved = other !== undefined && other.liveUntil !== s.liveUntil;
-  const ttl = s.liveUntil === null ? "" : ` <sub>${ttlMoved ? "**" : ""}live until ${s.liveUntil}${ttlMoved ? "**" : ""}</sub>`;
+  const ttl =
+    s.liveUntil === null
+      ? ""
+      : ` <sub>${ttlMoved ? "**" : ""}live until ${s.liveUntil}${ttlMoved ? "**" : ""}</sub>`;
   if (c.kind === "ttl") return ttl.trim() || "—";
   return `${cell(s.value)}${ttl}`;
 }
