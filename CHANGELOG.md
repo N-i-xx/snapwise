@@ -15,5 +15,5 @@ All notable changes to this project are documented here. The format is based on 
 - GitHub Action: one sticky PR comment, job summary, outputs, `fail-on` policy, and graceful handling of read-only tokens on fork PRs.
 - Example vault contract (soroban-sdk 29.0.1) with committed snapshots, and real before/after fixtures.
 
-[Unreleased]: https://github.com/Ike-Nathan/snapwise/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/Ike-Nathan/snapwise/releases/tag/v0.1.0
+[Unreleased]: https://github.com/N-i-xx/snapwise/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/N-i-xx/snapwise/releases/tag/v0.1.0
