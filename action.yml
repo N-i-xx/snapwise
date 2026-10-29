@@ -1,6 +1,6 @@
 name: Snapwise - Soroban snapshot review
 description: Posts a readable review of Soroban test snapshot changes (storage, TTL, events, auth) on every pull request.
-author: N-thnl
+author: Ike-Nathan
 branding:
   icon: search
   color: purple

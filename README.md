@@ -2,7 +2,7 @@
 
 **Readable pull-request reviews of Soroban test snapshots.**
 
-[![CI](https://github.com/N-thnl/snapwise/actions/workflows/ci.yml/badge.svg)](https://github.com/N-thnl/snapwise/actions/workflows/ci.yml)
+[![CI](https://github.com/Ike-Nathan/snapwise/actions/workflows/ci.yml/badge.svg)](https://github.com/Ike-Nathan/snapwise/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
 Every Soroban contract test that uses an `Env` writes a JSON snapshot of the ledger state, the emitted events and the authorization trees to `test_snapshots/`. The [Stellar docs](https://developers.stellar.org/docs/build/guides/testing/differential-tests-with-test-snapshots) recommend committing these files so unexpected side effects show up in review. In practice, a one-line contract change turns into thousands of lines of raw JSON diff, and reviewers skip it. Snapwise reads both versions of every snapshot, works out what actually changed (storage values, TTLs, events, who authorized what), and posts **one readable, sticky comment** on the pull request.
@@ -50,7 +50,7 @@ Snapwise reads committed snapshots straight from git. It does **not** compile or
 From a fresh clone, compare the bundled before/after fixtures (a real vault contract, before and after adding a deposit fee):
 
 ```sh
-git clone https://github.com/N-thnl/snapwise && cd snapwise
+git clone https://github.com/Ike-Nathan/snapwise && cd snapwise
 npm ci
 npm run build
 node lib/bin.js diff test/fixtures/vault-fee/base test/fixtures/vault-fee/head
@@ -59,7 +59,7 @@ node lib/bin.js diff test/fixtures/vault-fee/base test/fixtures/vault-fee/head
 In your own contract repo, after running `cargo test`:
 
 ```sh
-npx github:N-thnl/snapwise diff            # HEAD vs your working tree
+npx github:Ike-Nathan/snapwise diff            # HEAD vs your working tree
 ```
 
 ## GitHub Action
@@ -78,7 +78,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # Snapwise reads the base commit's snapshots from git
-      - uses: N-thnl/snapwise@v0.1.0
+      - uses: Ike-Nathan/snapwise@v0.1.0
         with:
           fail-on: auth # optional: block PRs that change authorization trees
 ```
@@ -145,7 +145,7 @@ Snapwise is **v0.1**: it works end to end on the bundled example and its own CI,
 - Decoded contract errors and diagnostic events where the snapshot includes them.
 - Published npm package and a GitHub Marketplace listing.
 
-See the [open issues](https://github.com/N-thnl/snapwise/issues) for the full list. Many are labelled `good first issue`.
+See the [open issues](https://github.com/Ike-Nathan/snapwise/issues) for the full list. Many are labelled `good first issue`.
 
 ## Documentation
 

@@ -25337,7 +25337,7 @@ function renderMarkdown(report, opts = {}) {
   ];
   const footer = [
     "",
-    `<sub>Compared \`${escapeInline(report.base)}\` \u2192 \`${escapeInline(report.head)}\` \xB7 events show the last call of each test only \xB7 [Snapwise](https://github.com/N-thnl/snapwise)${opts.footer ? ` \xB7 ${opts.footer}` : ""}</sub>`
+    `<sub>Compared \`${escapeInline(report.base)}\` \u2192 \`${escapeInline(report.head)}\` \xB7 events show the last call of each test only \xB7 [Snapwise](https://github.com/Ike-Nathan/snapwise)${opts.footer ? ` \xB7 ${opts.footer}` : ""}</sub>`
   ];
   if (report.tests.length === 0) {
     return [...head, "No test snapshot changes. \u2705", ...footer].join("\n");

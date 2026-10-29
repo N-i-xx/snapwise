@@ -4,13 +4,13 @@
   "description": "Readable, semantic PR reviews of Soroban test snapshots: storage, TTL, events and auth changes in one comment.",
   "type": "module",
   "license": "Apache-2.0",
-  "author": "N-thnl",
+  "author": "Ike-Nathan",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/N-thnl/snapwise.git"
+    "url": "git+https://github.com/Ike-Nathan/snapwise.git"
   },
-  "homepage": "https://github.com/N-thnl/snapwise#readme",
-  "bugs": "https://github.com/N-thnl/snapwise/issues",
+  "homepage": "https://github.com/Ike-Nathan/snapwise#readme",
+  "bugs": "https://github.com/Ike-Nathan/snapwise/issues",
   "keywords": [
     "stellar",
     "soroban",

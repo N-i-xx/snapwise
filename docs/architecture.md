@@ -2,11 +2,11 @@
 
 Snapwise is one TypeScript package with three entry points that share the same core:
 
-| Entry point   | File                    | Built to                   | Used by                   |
-| ------------- | ----------------------- | -------------------------- | ------------------------- |
-| Library       | `src/index.ts`          | `lib/` (tsc)               | other tools, tests        |
-| CLI           | `src/bin.ts` → `cli.ts` | `lib/bin.js` (tsc)         | developers, any CI system |
-| GitHub Action | `src/action/index.ts`   | `dist/index.mjs` (esbuild) | `uses: N-thnl/snapwise@…` |
+| Entry point   | File                    | Built to                   | Used by                       |
+| ------------- | ----------------------- | -------------------------- | ----------------------------- |
+| Library       | `src/index.ts`          | `lib/` (tsc)               | other tools, tests            |
+| CLI           | `src/bin.ts` → `cli.ts` | `lib/bin.js` (tsc)         | developers, any CI system     |
+| GitHub Action | `src/action/index.ts`   | `dist/index.mjs` (esbuild) | `uses: Ike-Nathan/snapwise@…` |
 
 The library and CLI have **no runtime dependencies**. The Action bundles `@actions/core` and `@actions/github` into `dist/index.mjs`, which is committed so the Action runs without an install step. CI fails if the committed bundle is out of date.
 
