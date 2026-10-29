@@ -1,0 +1,60 @@
+name: Snapwise - Soroban snapshot review
+description: Posts a readable review of Soroban test snapshot changes (storage, TTL, events, auth) on every pull request.
+author: N-thnl
+branding:
+  icon: search
+  color: purple
+
+inputs:
+  working-directory:
+    description: Directory to scan for test_snapshots/ folders, relative to the repository root.
+    required: false
+    default: "."
+  base-ref:
+    description: Git ref to compare from. Defaults to the pull request's base commit (or the previous commit on push).
+    required: false
+    default: ""
+  head-ref:
+    description: Git ref to compare to. Defaults to HEAD (the checked-out PR merge commit).
+    required: false
+    default: ""
+  fail-on:
+    description: >-
+      Fail the check when snapshots change in these ways (comma separated):
+      none, any, auth, storage, ttl, events, env, added, removed, error.
+    required: false
+    default: "none"
+  comment:
+    description: Post or update one sticky comment on the pull request.
+    required: false
+    default: "true"
+  comment-on-no-changes:
+    description: Create a comment even when no snapshots changed. An existing comment is always kept up to date.
+    required: false
+    default: "false"
+  include-nonces:
+    description: Include auth nonce ledger entries in the report (hidden by default).
+    required: false
+    default: "false"
+  github-token:
+    description: Token used to write the PR comment. Needs pull-requests write permission.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  changed:
+    description: Number of tests whose snapshots changed.
+  added:
+    description: Number of new snapshots.
+  removed:
+    description: Number of deleted snapshots.
+  auth-changed:
+    description: Number of changed tests whose authorization trees changed.
+  report-json:
+    description: Path to the full JSON report.
+  report-markdown:
+    description: Path to the Markdown report.
+
+runs:
+  using: node24
+  main: dist/index.mjs
