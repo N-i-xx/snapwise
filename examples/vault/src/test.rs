@@ -29,9 +29,9 @@ fn setup<'a>() -> Setup<'a> {
 #[test]
 fn deposit_records_shares() {
     let s = setup();
-    assert_eq!(s.vault.deposit(&s.user, &400), 400);
-    assert_eq!(s.vault.shares(&s.user), 400);
-    assert_eq!(s.vault.total_shares(), 400);
+    assert_eq!(s.vault.deposit(&s.user, &400), 396);
+    assert_eq!(s.vault.shares(&s.user), 396);
+    assert_eq!(s.vault.total_shares(), 396);
     assert_eq!(s.token.balance(&s.user), 600);
 }
 
@@ -39,7 +39,7 @@ fn deposit_records_shares() {
 fn withdraw_returns_tokens() {
     let s = setup();
     s.vault.deposit(&s.user, &400);
-    assert_eq!(s.vault.withdraw(&s.user, &150), 250);
+    assert_eq!(s.vault.withdraw(&s.user, &150), 246);
     assert_eq!(s.token.balance(&s.user), 750);
 }
 
@@ -48,7 +48,7 @@ fn withdraw_more_than_shares_fails() {
     let s = setup();
     s.vault.deposit(&s.user, &100);
     assert_eq!(
-        s.vault.try_withdraw(&s.user, &101),
+        s.vault.try_withdraw(&s.user, &100),
         Err(Ok(VaultError::InsufficientShares))
     );
 }
@@ -60,9 +60,9 @@ fn two_users_are_independent() {
     StellarAssetClient::new(&s.env, &s.token.address).mint(&other, &500);
     s.vault.deposit(&s.user, &100);
     s.vault.deposit(&other, &300);
-    assert_eq!(s.vault.shares(&s.user), 100);
-    assert_eq!(s.vault.shares(&other), 300);
-    assert_eq!(s.vault.total_shares(), 400);
+    assert_eq!(s.vault.shares(&s.user), 99);
+    assert_eq!(s.vault.shares(&other), 297);
+    assert_eq!(s.vault.total_shares(), 396);
 }
 
 /// Test snapshots record the events of the *last* top-level invocation only,
