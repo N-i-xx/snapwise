@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - name: Check the bundled action is up to date
+        run: |
+          npm run build:action
+          git diff --exit-code -- dist || {
+            echo "::error::dist/ is out of date. Run 'npm run build:action' and commit the result."
+            exit 1
+          }
+
+  example:
+    name: Example contract (rustfmt, clippy, tests, snapshots)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/vault
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: examples/vault
+      - run: cargo fmt --check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test
+      - name: Check committed test snapshots are up to date
+        run: |
+          git diff --exit-code -- test_snapshots || {
+            echo "::error::Test snapshots changed when running the tests. Run 'cargo test' and commit test_snapshots/."
+            exit 1
+          }
