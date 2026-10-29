@@ -6,7 +6,7 @@
 - uses: actions/checkout@v7
   with:
     fetch-depth: 0
-- uses: N-thnl/snapwise@v0.1.0
+- uses: Ike-Nathan/snapwise@v0.1.0
   with:
     working-directory: contracts
     fail-on: auth,removed

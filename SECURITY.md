@@ -6,7 +6,7 @@ Snapwise is pre-1.0. Only the latest release receives fixes.
 
 ## Reporting a vulnerability
 
-Please report vulnerabilities **privately** through GitHub's [private vulnerability reporting](https://github.com/N-thnl/snapwise/security/advisories/new) ("Report a vulnerability" under the Security tab). Do not open a public issue.
+Please report vulnerabilities **privately** through GitHub's [private vulnerability reporting](https://github.com/Ike-Nathan/snapwise/security/advisories/new) ("Report a vulnerability" under the Security tab). Do not open a public issue.
 
 Include what you found, how to reproduce it, and the impact you expect. You will get an acknowledgement within 5 working days, and we will agree on a disclosure timeline with you before anything is published.
 

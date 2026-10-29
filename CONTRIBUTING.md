@@ -7,7 +7,7 @@ Thanks for your interest! Snapwise is small and every contribution is reviewed b
 You need **Node.js 22.12 or later** and **git**. Rust is only needed to regenerate the example contract's snapshots.
 
 ```sh
-git clone https://github.com/N-thnl/snapwise && cd snapwise
+git clone https://github.com/Ike-Nathan/snapwise && cd snapwise
 npm ci
 npm run all      # typecheck, lint, test, build, bundle the action
 ```
