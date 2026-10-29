@@ -62,11 +62,15 @@ impl Vault {
         if amount <= 0 {
             return Err(VaultError::InvalidAmount);
         }
-        token_client(&env).transfer(&user, &env.current_contract_address(), &amount);
+        token_client(&env).transfer(&user, env.current_contract_address(), &amount);
 
         let shares = shares_of(&env, &user) + amount;
         set_shares(&env, &user, shares);
-        let total: i128 = env.storage().instance().get(&DataKey::TotalShares).unwrap_or(0);
+        let total: i128 = env
+            .storage()
+            .instance()
+            .get(&DataKey::TotalShares)
+            .unwrap_or(0);
         env.storage()
             .instance()
             .set(&DataKey::TotalShares, &(total + amount));
@@ -86,7 +90,11 @@ impl Vault {
             return Err(VaultError::InsufficientShares);
         }
         set_shares(&env, &user, shares - amount);
-        let total: i128 = env.storage().instance().get(&DataKey::TotalShares).unwrap_or(0);
+        let total: i128 = env
+            .storage()
+            .instance()
+            .get(&DataKey::TotalShares)
+            .unwrap_or(0);
         env.storage()
             .instance()
             .set(&DataKey::TotalShares, &(total - amount));
@@ -101,7 +109,10 @@ impl Vault {
     }
 
     pub fn total_shares(env: Env) -> i128 {
-        env.storage().instance().get(&DataKey::TotalShares).unwrap_or(0)
+        env.storage()
+            .instance()
+            .get(&DataKey::TotalShares)
+            .unwrap_or(0)
     }
 }
 
