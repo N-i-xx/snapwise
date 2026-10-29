@@ -1,6 +1,6 @@
 {
   "name": "snapwise",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Readable, semantic PR reviews of Soroban test snapshots: storage, TTL, events and auth changes in one comment.",
   "type": "module",
   "license": "Apache-2.0",
