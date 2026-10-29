@@ -58,7 +58,7 @@ vi.mock("@actions/github", () => {
       get payload() {
         return state.payload;
       },
-      repo: { owner: "Ike-Nathan", repo: "snapwise" },
+      repo: { owner: "N-i-xx", repo: "snapwise" },
       runId: 42,
       serverUrl: "https://github.com",
     },

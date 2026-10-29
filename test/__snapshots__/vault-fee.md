@@ -156,4 +156,4 @@ File: `vault/test_snapshots/test/withdraw_returns_tokens.1.json`
 
 </details>
 
-<sub>Compared `main` → `feature` · events show the last call of each test only · [Snapwise](https://github.com/Ike-Nathan/snapwise)</sub>
+<sub>Compared `main` → `feature` · events show the last call of each test only · [Snapwise](https://github.com/N-i-xx/snapwise)</sub>

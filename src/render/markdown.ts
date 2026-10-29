@@ -34,7 +34,7 @@ export function renderMarkdown(report: Report, opts: MarkdownOptions = {}): stri
   ];
   const footer = [
     "",
-    `<sub>Compared \`${escapeInline(report.base)}\` → \`${escapeInline(report.head)}\` · events show the last call of each test only · [Snapwise](https://github.com/Ike-Nathan/snapwise)${opts.footer ? ` · ${opts.footer}` : ""}</sub>`,
+    `<sub>Compared \`${escapeInline(report.base)}\` → \`${escapeInline(report.head)}\` · events show the last call of each test only · [Snapwise](https://github.com/N-i-xx/snapwise)${opts.footer ? ` · ${opts.footer}` : ""}</sub>`,
   ];
 
   if (report.tests.length === 0) {
