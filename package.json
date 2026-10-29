@@ -1,0 +1,65 @@
+{
+  "name": "snapwise",
+  "version": "0.0.0",
+  "description": "Readable, semantic PR reviews of Soroban test snapshots: storage, TTL, events and auth changes in one comment.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "N-thnl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/N-thnl/snapwise.git"
+  },
+  "homepage": "https://github.com/N-thnl/snapwise#readme",
+  "bugs": "https://github.com/N-thnl/snapwise/issues",
+  "keywords": [
+    "stellar",
+    "soroban",
+    "smart-contracts",
+    "testing",
+    "snapshot",
+    "code-review",
+    "github-action"
+  ],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "bin": {
+    "snapwise": "lib/bin.js"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js"
+    }
+  },
+  "files": [
+    "lib",
+    "!lib/action"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:action": "node scripts/build-action.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:update": "vitest run -u",
+    "all": "npm run typecheck && npm run lint && npm test && npm run build && npm run build:action"
+  },
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/github": "^9.1.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vitest": "^5.0.5"
+  }
+}

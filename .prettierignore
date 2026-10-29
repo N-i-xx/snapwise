@@ -1,0 +1,9 @@
+lib/
+dist/
+coverage/
+examples/**/target/
+examples/**/test_snapshots/
+test/fixtures/
+test/__snapshots__/
+CHANGELOG.md
+package-lock.json
