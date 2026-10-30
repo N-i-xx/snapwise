@@ -12,7 +12,10 @@ use soroban_sdk::{
 /// Persistent entries are kept alive for roughly 30 days (at ~5s ledgers)
 /// whenever they are written, once they drop below roughly 7 days.
 const BUMP_THRESHOLD: u32 = 120_960;
-const BUMP_TO: u32 = 518_400;
+const BUMP_TO: u32 = 1_036_800;
+
+/// Deposit fee in basis points, paid to the admin.
+const FEE_BPS: i128 = 100;
 
 #[contracttype]
 #[derive(Clone)]
@@ -36,6 +39,14 @@ pub struct Deposited {
     #[topic]
     pub user: Address,
     pub amount: i128,
+}
+
+/// Emitted when a deposit fee is taken.
+#[contractevent]
+pub struct FeeCharged {
+    #[topic]
+    pub user: Address,
+    pub fee: i128,
 }
 
 #[contractevent]
@@ -62,9 +73,21 @@ impl Vault {
         if amount <= 0 {
             return Err(VaultError::InvalidAmount);
         }
-        token_client(&env).transfer(&user, env.current_contract_address(), &amount);
+        let fee = amount * FEE_BPS / 10_000;
+        let net = amount - fee;
+        let token = token_client(&env);
+        token.transfer(&user, env.current_contract_address(), &net);
+        if fee > 0 {
+            let admin: Address = env.storage().instance().get(&DataKey::Admin).unwrap();
+            token.transfer(&user, &admin, &fee);
+            FeeCharged {
+                user: user.clone(),
+                fee,
+            }
+            .publish(&env);
+        }
 
-        let shares = shares_of(&env, &user) + amount;
+        let shares = shares_of(&env, &user) + net;
         set_shares(&env, &user, shares);
         let total: i128 = env
             .storage()
@@ -73,9 +96,9 @@ impl Vault {
             .unwrap_or(0);
         env.storage()
             .instance()
-            .set(&DataKey::TotalShares, &(total + amount));
+            .set(&DataKey::TotalShares, &(total + net));
 
-        Deposited { user, amount }.publish(&env);
+        Deposited { user, amount: net }.publish(&env);
         Ok(shares)
     }
 
