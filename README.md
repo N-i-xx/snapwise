@@ -129,7 +129,7 @@ Action outputs: `changed`, `added`, `removed`, `auth-changed`, `report-json`, `r
 
 Snapwise is **v0.1**: it works end to end on the bundled example and its own CI, and has not yet been used on large production contract suites.
 
-- **Snapshot format verified against soroban-sdk 29.0.1** (protocol 29). The format follows the Stellar XDR JSON encoding, so other recent SDK versions are expected to work, but only 29.0.1 has been tested. Unknown value types are shown as compact JSON, never dropped.
+- **Snapshot format verified against soroban-sdk 29.0.1** (protocol 29) **and 30.0.0-rc.1** (protocol 30). Between the two, the only difference in the example snapshots is `protocol_version`, which Snapwise reports as a ledger setting change. Older SDK versions have not been tested. Unknown value types are shown as compact JSON, never dropped.
 - **Events cover only the last top-level call of each test.** This is how the SDK records snapshots, not a Snapwise choice. To have a call's events reviewed, make it the last call in a test.
 - **Snapwise trusts the committed snapshots.** It doesn't run your tests. Use the `git diff --exit-code` step above to keep snapshots honest.
 - **Test addresses are positional.** `Address::generate` returns deterministic addresses in creation order, so adding a `generate` call early in a test shifts later addresses and makes many rows look changed.
