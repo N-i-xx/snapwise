@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format is based on 
 
 ## [Unreleased]
 
+### Added
+
+- Compatibility test with a real soroban-sdk 30.0.0-rc.1 snapshot: it parses, and differs from SDK 29 output only in `protocol_version`.
+
 ## [0.1.0] - 2026-10-29
 
 ### Added
